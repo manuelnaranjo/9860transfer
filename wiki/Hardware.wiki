@@ -12,5 +12,5 @@ Spansion S29JL032H (4MB)
 
 
 Amic LP62S16256F-T Series (512kB)
-  *256K X 16 BIT LOW VOLTAGE CMOS SRAM
+  * 256K X 16 BIT LOW VOLTAGE CMOS SRAM
   * [http://www.amictechnology.com/pdf/LP62S16256F-T.pdf Datasheet]
