@@ -1,49 +1,51 @@
-In this page we will make the protocol analisis:
+In this page we will make the protocol analysis:
+
+All values are in HEX.
+
+*Inquiry:*
+	|| ` 05 30 30 30 `||
+	|| ` 37 37       `||
+	
+*Acknowledge:*
+	||` 06 30 30 30 37 30 `||
+
+*Identify:*
+	||` 01 30 31 30 `||
+	||` 36 46 `||
+
+Reply:
+
+_package 1:_
+|| ` 06 30 32 31 30 30 41 34 47 79 33 36 33 30 30 37 ` || `.02100A4Gy363007 `||
+|| ` 52 45 4E 45 53 41 53 20 53 48 37 33 33 37 30 31 ` || `RENESAS SH733701 `||
+|| ` 30 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36 ` || `0000000000004096 `||
+|| ` 30 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF ` || `00000128ÿÿÿÿÿÿÿÿ `||
+
+_package 2:_
+|| `FF FF FF FF FF FF FF FF 30 30 2E 31 30 2E 30 30` || `ÿÿÿÿÿÿÿÿ00.10.00 `||
+|| `31 30 FF FF FF FF FF FF 30 30 30 30 30 30 30 30` || `10ÿÿÿÿÿÿ00000000 `||
+|| `30 30 30 30 30 30 36 34 30 31 2E 30 33 2E 30 30` || `0000006401.03.00 `||
+|| `30 30 FF FF FF FF FF FF 30 30 30 31 30 30 30 30` || `00ÿÿÿÿÿÿ00010000 `||
+
+_package 3:_
+|| `30 30 30 30 32 34 39 36 37 2E 30 30 56 54 4F 4E` || `000024967.00VTON`||
+|| `4A 46 6F 47 FF FF FF FF FF FF FF FF 4D 41 4E 55` || `JFoGÿÿÿÿÿÿÿÿMANU`||
+|| `45 4C FF FF FF FF FF FF FF FF FF FF 34 32      ` || `ELÿÿÿÿÿÿÿÿÿÿ42  `||
+
+
+*Ask System Settings:*
+	||`01 33 33 30`||
+	||`36 41`||
+
+*Start:*
+	||`03 30 30 30 `||
+	||`37 30 `||
+
+*Next:*
+	||`06 30 30 30`||
+	||`37 30`||
 
 {{{
-All values are in HEX.
-Inquiry: 
-	05 30 30 30
-	37 37
-	
-Acknowledge:
-	06 30 30 30 37 30
-
-Identify:
-	01 30 31 30
-	36 46
-	Reply: Name, kind of processor, and lot of stuff
-
-package 1:
-06 30 32 31 30 30 41 34 47 79 33 36 33 30 30 37		.02100A4Gy363007
-52 45 4E 45 53 41 53 20 53 48 37 33 33 37 30 31		RENESAS SH733701
-30 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36		0000000000004096
-30 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF		00000128ÿÿÿÿÿÿÿÿ
-
-package 2:
-FF FF FF FF FF FF FF FF 30 30 2E 31 30 2E 30 30		ÿÿÿÿÿÿÿÿ00.10.00
-31 30 FF FF FF FF FF FF 30 30 30 30 30 30 30 30		10ÿÿÿÿÿÿ00000000
-30 30 30 30 30 30 36 34 30 31 2E 30 33 2E 30 30		0000006401.03.00
-30 30 FF FF FF FF FF FF 30 30 30 31 30 30 30 30		00ÿÿÿÿÿÿ00010000
-
-package 3:
-30 30 30 30 32 34 39 36 37 2E 30 30 56 54 4F 4E		000024967.00VTON
-4A 46 6F 47 FF FF FF FF FF FF FF FF 4D 41 4E 55		JFoGÿÿÿÿÿÿÿÿMANU
-45 4C FF FF FF FF FF FF FF FF FF FF 34 32		ELÿÿÿÿÿÿÿÿÿÿ42
-
-
-Ask System Settings:
-	01 33 33 30
-	36 41
-
-Start:
-	03 30 30 30
-	37 30
-
-Next:
-	06 30 30 30
-	37 30
-
 Example settings:
 01 33 32 31 30 30 31 46 30 30 38 30 30 30 30 30		.321001F00800000
 30 30 30 30 30 35 30 32 30 30 30 30 30 30 30 30		0000050200000000
@@ -166,3 +168,8 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
+
+
+
+
+
