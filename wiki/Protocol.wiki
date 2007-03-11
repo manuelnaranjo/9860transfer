@@ -60,8 +60,8 @@ Example settings:
 46 75 6E 63 20 54 79 70 65 30 30 36 34			Func Type0064
 
 Protocol?
-01 33 32 31 30 30 XX XX 30 30 38 30 30 30 30 30		// X = Y + 0x1A (address?)
-30 30 30 30 YY YY 30 32 30 30 30 30 30 30 30 30		// Y = length of SETTING NAME
+01 33 32 31 30 30 < X > 30 30 38 30 30 30 30 30		// X = Y + 0x1A (address?)
+30 30 30 30 < Y > 30 32 30 30 30 30 30 30 30 30		// Y = length of SETTING NAME
 <SETTING NAME> <VALUE *4>
 
 No more left:
@@ -168,7 +168,6 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
-
 
 
 
