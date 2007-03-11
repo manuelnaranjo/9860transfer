@@ -2,31 +2,28 @@ In this page we will make the protocol analysis:
 
 All values are in HEX.
 
-*Inquiry:*
+*SEND: Inquiry:*
 	|| ` 05 30 30 30 `||
 	|| ` 37 37       `||
 	
-*Acknowledge:*
+*RECV: Acknowledge:*
 	||` 06 30 30 30 37 30 `||
 
-*Identify:*
+*SEND: Identify:*
 	||` 01 30 31 30 `||
 	||` 36 46 `||
 
-Reply:
-
+*RECV:*
 _package 1:_
 || ` 06 30 32 31 30 30 41 34 47 79 33 36 33 30 30 37 ` || `.02100A4Gy363007 `||
 || ` 52 45 4E 45 53 41 53 20 53 48 37 33 33 37 30 31 ` || `RENESAS SH733701 `||
 || ` 30 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36 ` || `0000000000004096 `||
 || ` 30 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF ` || `00000128ÿÿÿÿÿÿÿÿ `||
-
 _package 2:_
 || `FF FF FF FF FF FF FF FF 30 30 2E 31 30 2E 30 30` || `ÿÿÿÿÿÿÿÿ00.10.00 `||
 || `31 30 FF FF FF FF FF FF 30 30 30 30 30 30 30 30` || `10ÿÿÿÿÿÿ00000000 `||
 || `30 30 30 30 30 30 36 34 30 31 2E 30 33 2E 30 30` || `0000006401.03.00 `||
 || `30 30 FF FF FF FF FF FF 30 30 30 31 30 30 30 30` || `00ÿÿÿÿÿÿ00010000 `||
-
 _package 3:_
 || `30 30 30 30 32 34 39 36 37 2E 30 30 56 54 4F 4E` || `000024967.00VTON`||
 || `4A 46 6F 47 FF FF FF FF FF FF FF FF 4D 41 4E 55` || `JFoGÿÿÿÿÿÿÿÿMANU`||
@@ -60,8 +57,8 @@ Example settings:
 46 75 6E 63 20 54 79 70 65 30 30 36 34			Func Type0064
 
 Protocol?
-01 33 32 31 30 30 < X > 30 30 38 30 30 30 30 30		// X = Y + 0x1A (address?)
-30 30 30 30 < Y > 30 32 30 30 30 30 30 30 30 30		// Y = length of SETTING NAME
+01 33 32 31 30 30 XX XX 30 30 38 30 30 30 30 30		// X = Y + 0x1A (address?)
+30 30 30 30 YY YY 30 32 30 30 30 30 30 30 30 30		// Y = length of SETTING NAME
 <SETTING NAME> <VALUE *4>
 
 No more left:
@@ -168,6 +165,7 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
+
 
 
 
