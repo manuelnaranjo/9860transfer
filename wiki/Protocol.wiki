@@ -41,8 +41,8 @@ _Protocol Analysis:_
 || `30 30 30 30 30 30 36 34 30 < ROMVERSION ROMVERS` || `0000006401.02.00` || ||
 || `ION > FF FF FF FF FF FF 30 30 30 31 30 30 30 30` || `00ÿÿÿÿÿÿ00010000` || ||
 || `30 30 30 30 32 34 39 36 37 2E 30 30 ?? ?? ?? ??` || `000024967.00PECB` || ?? Junk that changed between Manuel's calc and Andreas's || 
-|| `?? ?? ?? ?? FF FF FF FF FF FF FF FF < NAME NAME` || `BGhlÿÿÿÿÿÿÿÿAAAA` || Name is up to 8 chars || 
-|| `NAME NAME > FF FF FF FF FF FF FF FF ?? ??      ` || `AAAAÿÿÿÿÿÿÿÿ11  ` ||
+|| `?? ?? ?? ?? FF FF FF FF FF FF FF FF < NAME NAME` || `BGhlÿÿÿÿÿÿÿÿAAAA` || Name is up to 8 chars Complete with FF || 
+|| `NAME NAME > FF FF FF FF FF FF FF FF ?? ??      ` || `AAAAÿÿÿÿÿÿÿÿ11  ` || ||
 
 *Ask System Settings:*
 	||`01 33 33 30`||
@@ -179,6 +179,5 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
-
 
 
