@@ -24,6 +24,8 @@
 
 #define LEN_LINE	20
 
+#define __DUMP__
+
 /*
  * Private methods
  */
@@ -109,7 +111,7 @@ struct usb_device *device_init(void)
 /**
  * Public Methods
  */
-int init_9860(usb_dev_handle *usb_handle){
+int init_9860(struct usb_dev_handle *usb_handle){
 	char* out;
 	int retval;
 	out = calloc(0x12, sizeof(char));
@@ -149,7 +151,7 @@ int init_9860(usb_dev_handle *usb_handle){
 }
 
 int getHandler9860(struct usb_device *usb_dev, 
-		usb_dev_handle *usb_handle){
+		struct usb_dev_handle *usb_handle){
 	usb_dev = device_init();
 	int retval = 0;
 	
@@ -181,15 +183,27 @@ int main(int argc, char **argv){
     struct usb_device *usb_dev;
     struct usb_dev_handle *usb_handle;
     
-    retval = getHandler9860(usb_dev, usb_handle);
+    usb_dev = device_init();
+	
+    if (usb_dev == NULL) {
+        fprintf(stderr, "Device not found\n");        
+        goto exit;
+    }
     
-    if (retval == -1)
-    	goto exit;
-    else if (retval == -2)
-    	goto exit_close;
-    else if (retval == -3)
-    	goto exit_unclaim;
-	    
+    usb_handle = usb_open(usb_dev);
+    if (usb_handle == NULL) {
+        fprintf(stderr,
+             "Not able to claim the USB device\n");
+        goto exit_close;
+    }
+    
+    retval = usb_claim_interface(usb_handle, 0);
+    if (retval < 0) {
+    	fprintf(stderr,
+    		"Not able to claim USB Interface\n");
+    	goto exit_unclaim;    	
+    }
+           
     retval = init_9860(usb_handle);
     
     if (retval < 0){
@@ -342,8 +356,9 @@ exit_unclaim:
 	usb_release_interface(usb_handle, 0);
 exit_close:	
     usb_close(usb_handle);
-exit:
+exit_free:
 	free(usb_dev);
+exit:
 	exit(retval);
     return retval;
 }
@@ -351,7 +366,7 @@ exit:
 /**
  * This method write n chars
  */
-int sendPackage(usb_dev_handle *usb_handle, char* out, int len){
+int sendPackage(struct usb_dev_handle *usb_handle, char* out, int len){
 	int retval;
 	retval = usb_bulk_write(usb_handle, 0x1, out, len, 100);
 	
@@ -367,14 +382,14 @@ int sendPackage(usb_dev_handle *usb_handle, char* out, int len){
 /**
  * This method reads the hole buffer.
  */
-int readBuffer(usb_dev_handle *usb_handle, char* out){
+int readBuffer(struct usb_dev_handle *usb_handle, char* out){
 	return readPackage(usb_handle, out, 0x40);
 }
 
 /**
  * This method reads n chars
  */
-int readPackage(usb_dev_handle *usb_handle, char* out, int len){
+int readPackage(struct usb_dev_handle *usb_handle, char* out, int len){
 	int retval;
 	retval = usb_bulk_read(usb_handle, 0x82, out, len, 1000);
 	
