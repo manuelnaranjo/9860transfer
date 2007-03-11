@@ -15,23 +15,34 @@ All values are in HEX.
 
 *RECV:*
 
-_package 1:_
-|| ` 06 30 32 31 30 30 41 34 47 79 33 36 33 30 30 37 ` || `.02100A4Gy363007 `||
-|| ` 52 45 4E 45 53 41 53 20 53 48 37 33 33 37 30 31 ` || `RENESAS SH733701 `||
-|| ` 30 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36 ` || `0000000000004096 `||
-|| ` 30 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF ` || `00000128ÿÿÿÿÿÿÿÿ `||
+Transmission is divided in 3 packages, the most long is 60d bytes long, and the hole transfer seems to be off 174d (AE) bytes long.
 
-_package 2:_
+_Transfer:_
+|| `06 30 32 31 30 30 41 34 47 79 33 36 33 30 30 37` || `.02100A4Gy363007 `||
+|| `52 45 4E 45 53 41 53 20 53 48 37 33 33 37 30 31` || `RENESAS SH733701 `||
+|| `30 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36` || `0000000000004096 `||
+|| `30 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF` || `00000128ÿÿÿÿÿÿÿÿ `||
 || `FF FF FF FF FF FF FF FF 30 30 2E 31 30 2E 30 30` || `ÿÿÿÿÿÿÿÿ00.10.00 `||
 || `31 30 FF FF FF FF FF FF 30 30 30 30 30 30 30 30` || `10ÿÿÿÿÿÿ00000000 `||
 || `30 30 30 30 30 30 36 34 30 31 2E 30 33 2E 30 30` || `0000006401.03.00 `||
 || `30 30 FF FF FF FF FF FF 30 30 30 31 30 30 30 30` || `00ÿÿÿÿÿÿ00010000 `||
+|| `30 30 30 30 32 34 39 36 37 2E 30 30 56 54 4F 4E` || `000024967.00VTON` ||
+|| `4A 46 6F 47 FF FF FF FF FF FF FF FF 4D 41 4E 55` || `JFoGÿÿÿÿÿÿÿÿMANU` ||
+|| `45 4C FF FF FF FF FF FF FF FF FF FF 34 32      ` || `ELÿÿÿÿÿÿÿÿÿÿ42  ` ||
 
-_package 3:_
-|| `30 30 30 30 32 34 39 36 37 2E 30 30 56 54 4F 4E` || `000024967.00VTON`||
-|| `4A 46 6F 47 FF FF FF FF FF FF FF FF 4D 41 4E 55` || `JFoGÿÿÿÿÿÿÿÿMANU`||
-|| `45 4C FF FF FF FF FF FF FF FF FF FF 34 32      ` || `ELÿÿÿÿÿÿÿÿÿÿ42  `||
+_Protocol Analysis:_
 
+|| `06 30 32 31 30 30 <LEN> 47 79 33 36 33 30 30 37` || `.02100A4Gy363007` //<LEN> Seems to be Total Transfer - 10 (Possible header len?)|| 
+|| `<MICRO INFO>>` || `RENESAS SH733701` ||
+|| `31 30 30 30 30 30 30 30 30 30 30 30 34 30 39 36` || `0000000000004096` || 
+|| `36 30 30 30 30 31 32 38 FF FF FF FF FF FF FF FF` || `00000128ÿÿÿÿÿÿÿÿ` || 
+|| `FF FF FF FF FF FF FF FF 30 30 2E 31 30 2E 30 30` || `ÿÿÿÿÿÿÿÿ00.10.00` || 
+|| `30 30 FF FF FF FF FF FF 30 30 30 30 30 30 30 30` || `10ÿÿÿÿÿÿ00000000` || 
+|| `30 30 30 30 30 30 36 34 30 < ROMVERSION ROMVERS` || `0000006401.02.00` || 
+|| `ION > FF FF FF FF FF FF 30 30 30 31 30 30 30 30` || `00ÿÿÿÿÿÿ00010000` || 
+|| `30 30 30 30 32 34 39 36 37 2E 30 30 ?? ?? ?? ??` || `000024967.00PECB` //?? Junk that changed between Manuel's calc and Andreas's|| 
+|| `?? ?? ?? ?? FF FF FF FF FF FF FF FF < NAME NAME` || `BGhlÿÿÿÿÿÿÿÿAAAA` //Name is up to 8 chars|| 
+|| `NAME NAME > FF FF FF FF FF FF FF FF ?? ??      ` || `AAAAÿÿÿÿÿÿÿÿ11  ` ||
 
 *Ask System Settings:*
 	||`01 33 33 30`||
