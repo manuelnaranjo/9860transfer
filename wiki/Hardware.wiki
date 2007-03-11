@@ -4,7 +4,7 @@
 
 == CPU ==
 Renesas SuperH 32bit RISC processor.
-  * Identified as SH7337. Possibly based on this microprocessor http://www.renesas.com/fmwk.jsp?cnt=sh7727_root.jsp&fp=/products/mpumcu/superh_family/sh7700_series/sh7727_group/
+  * Identified as SH7337. Possibly based on[http://www.renesas.com/fmwk.jsp?cnt=sh7727_root.jsp&fp=/products/mpumcu/superh_family/sh7700_series/sh7727_group/ SH7727] microprocessor.
   * [http://documentation.renesas.com/eng/products/mpumcu/rej09b0317_sh_3sm.pdf Manual]
   * [http://documentation.renesas.com/eng/products/mpumcu/rej09b0082_sh7705.pdf Possible DataSheet]
 
