@@ -7,7 +7,7 @@ Renesas SuperH 32bit RISC processor (verify)..
 
 == Memory ==
 Spansion S29JL032H (4MB)
-  *32 Megabit (4 M x 8-Bit/2 M x16-Bit) CMOS 3.0 Volt-only, Simultaneous Read/Write Flash Memory
+  * 32 Megabit (4 M x 8-Bit/2 M x16-Bit) CMOS 3.0 Volt-only, Simultaneous Read/Write Flash Memory
   * [http://www.spansion.com/products/S29JL032H.html Datasheet]
 
 
