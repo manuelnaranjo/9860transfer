@@ -3,7 +3,7 @@
 = fx-9860G SD =
 
 == CPU ==
-
+Renesas SuperH 32bit RISC processor (verify)..
 
 == Memory ==
 Spansion S29JL032H (4MB)
