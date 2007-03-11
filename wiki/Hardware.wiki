@@ -1,0 +1,16 @@
+#summary Information about the hardware in fx-9860G and fx-9860G SD
+
+= fx-9860G SD =
+
+== CPU ==
+
+
+== Memory ==
+Spansion S29JL032H (4MB)
+  *32 Megabit (4 M x 8-Bit/2 M x16-Bit) CMOS 3.0 Volt-only, Simultaneous Read/Write Flash Memory
+  * [http://www.spansion.com/products/S29JL032H.html Datasheet]
+
+
+Amic LP62S16256F-T Series (512kB)
+  *256K X 16 BIT LOW VOLTAGE CMOS SRAM
+  * [http://www.amictechnology.com/pdf/LP62S16256F-T.pdf Datasheet]
