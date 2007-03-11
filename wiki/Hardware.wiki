@@ -3,10 +3,10 @@
 = fx-9860G SD =
 
 == CPU ==
-Renesas SuperH 32bit RISC processor
-* Identified as SH7337. Possibly based on this microprocessor http://www.renesas.com/fmwk.jsp?cnt=sh7727_root.jsp&fp=/products/mpumcu/superh_family/sh7700_series/sh7727_group/
-* [http://documentation.renesas.com/eng/products/mpumcu/rej09b0317_sh_3sm.pdf Manual]
-* [http://documentation.renesas.com/eng/products/mpumcu/rej09b0082_sh7705.pdf Possible DataSheet]
+Renesas SuperH 32bit RISC processor.
+  * Identified as SH7337. Possibly based on this microprocessor http://www.renesas.com/fmwk.jsp?cnt=sh7727_root.jsp&fp=/products/mpumcu/superh_family/sh7700_series/sh7727_group/
+  * [http://documentation.renesas.com/eng/products/mpumcu/rej09b0317_sh_3sm.pdf Manual]
+  * [http://documentation.renesas.com/eng/products/mpumcu/rej09b0082_sh7705.pdf Possible DataSheet]
 
 == Memory ==
 Spansion S29JL032H (4MB)
