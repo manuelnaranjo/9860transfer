@@ -22,4 +22,7 @@ Amic LP62S16256F-T Series (512kB)
 
 
 
+
 The memory and other things on the calculater can be watched in "TEST MODE", by holding at once "shift , -> EXE" and then letting go of shift.
+
+_Source: https://edu.casio.com/forum/index_select.php?bn=2&bt=ms&mo=0&MASTER_NO=6#6 _
