@@ -2,6 +2,8 @@
 
 = fx-9860G SD =
 
+[http://www.mendietabar.com.ar/manuel/casio/pict Pictures of the board]
+
 == CPU ==
 Renesas SuperH 32bit RISC processor.
   * Identified as SH7337. Possibly based on [http://www.renesas.com/fmwk.jsp?cnt=sh7727_root.jsp&fp=/products/mpumcu/superh_family/sh7700_series/sh7727_group/ SH7727] microprocessor.
