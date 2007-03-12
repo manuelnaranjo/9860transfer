@@ -17,3 +17,7 @@ Spansion S29JL032H (4MB)
 Amic LP62S16256F-T Series (512kB)
   * 256K X 16 BIT LOW VOLTAGE CMOS SRAM
   * [http://www.amictechnology.com/pdf/LP62S16256F-T.pdf Datasheet]
+
+
+
+The memory and other things on the calculater can be watched in "TEST MODE", by holding at once "shift , -> EXE" and then letting go of shift.
