@@ -2,6 +2,8 @@ In this page we will make the protocol analysis:
 
 All values are in HEX.
 
+= Initialization =
+
 *SEND: Inquiry:*
 	|| ` 05 30 30 30 `||
 	|| ` 37 37       `||
@@ -44,6 +46,10 @@ _Protocol Analysis:_
 || `?? ?? ?? ?? FF FF FF FF FF FF FF FF < NAME NAME` || `BGhlÿÿÿÿÿÿÿÿAAAA` || Name is up to 8 chars Complete with FF || 
 || `NAME NAME > FF FF FF FF FF FF FF FF ?? ??      ` || `AAAAÿÿÿÿÿÿÿÿ11  ` || ||
 
+
+
+
+= User Memory =
 *Ask System Settings:*
 	||`01 33 33 30`||
 	||`36 41`||
@@ -52,9 +58,15 @@ _Protocol Analysis:_
 	||`03 30 30 30 `||
 	||`37 30 `||
 
-*Next:*
+*Next Element:*
 	||`06 30 30 30`||
 	||`37 30`||
+
+_ Example Memory Variable: _
+01 33 32 31 30 30 31 46 30 30 38 30 30 30 30 30		.321001F00800000
+30 30 30 30 30 35 30 32 30 30 30 30 30 30 30 30		0000050200000000
+41 6E 67 6C 65 30 31 42 43				Angle01BC
+
 
 {{{
 Example settings:
@@ -179,5 +191,6 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
+
 
 
