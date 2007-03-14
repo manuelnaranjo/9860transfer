@@ -22,7 +22,7 @@
 #define C9860_VENDOR_ID   0x07CF
 #define C9860_PRODUCT_ID  0x6101
 
-#define LEN_LINE	20
+#define LEN_LINE	16
 
 #define __DUMP__
 
@@ -44,14 +44,14 @@ void debug(int input, char* array, int len){
 		fprintf(stderr, "<< ");
 	
 	for (i = 0 ; i < len ; i++){
-		temp = (short unsigned int) array[i];
+		temp = (unsigned char) array[i];
 		
 		if (i % LEN_LINE == 0 && i != 0){
 			fprintf(stderr, "\t");
 			for (j = line; j < line + LEN_LINE; j++){
-				temp = (short unsigned int) array[j];
+				char u = (unsigned char) array[j];
 				if (temp > 31)
-					fprintf(stderr, "%c", temp);
+					fprintf(stderr, "%c", u);
 				else
 					fprintf(stderr, ".");
 			}
@@ -356,7 +356,6 @@ exit_unclaim:
 	usb_release_interface(usb_handle, 0);
 exit_close:	
     usb_close(usb_handle);
-exit_free:
 	free(usb_dev);
 exit:
 	exit(retval);
