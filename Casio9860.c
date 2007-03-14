@@ -50,7 +50,7 @@ void debug(int input, char* array, int len){
 			fprintf(stderr, "\t");
 			for (j = line; j < line + LEN_LINE; j++){
 				char u = (unsigned char) array[j];
-				if (temp > 31)
+				if (u > 31)
 					fprintf(stderr, "%c", u);
 				else
 					fprintf(stderr, ".");
@@ -118,13 +118,13 @@ int init_9860(struct usb_dev_handle *usb_handle){
         
     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x100, 0, out, 0x12, 200);
     debug(1, out, retval);
-    
+           
     if (retval < 0){
     	fprintf(stderr,
     		"Not able to send first message\n");
     	return retval;
     }
-    
+           
     out = (char *)realloc(out, (size_t) (0x29 * sizeof(char)));
          
     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x200, 0, out, 0x29, 250);
@@ -180,6 +180,7 @@ int getHandler9860(struct usb_device *usb_dev,
 int main(int argc, char **argv){
 	int retval = 1;
     char* out;
+    char* temp;
     struct usb_device *usb_dev;
     struct usb_dev_handle *usb_handle;
     
@@ -243,19 +244,28 @@ int main(int argc, char **argv){
 		
 	usleep(100*1000);
 	
+	temp = malloc (sizeof(char) * 0x40 * 3);
+	
 	retval = readPackage(usb_handle,out,0x40);
  	if (retval < 0)
  		goto exit_unclaim;
- 	
+ 		
+ 	memcpy(temp, out, retval);
+ 	 	
  	usleep(100*1000);	
  	retval = readPackage(usb_handle,out,0x40);
  	if (retval < 0)
  		goto exit_unclaim;
  	
+ 	memcpy(temp + 0x40, out, 0x40);
  	usleep(100*1000);
  	retval = readPackage(usb_handle,out,0x2e);
  	if (retval < 0)
  		goto exit_unclaim;
+
+	memcpy(temp + 0x80, out, retval);
+	parseHeader(temp, 0x80 + retval);
+	
 
 	out[0] = 0x01; out[1] = 0x33; out[2] = 0x33; out[3] = 0x30;
 	retval = sendPackage(usb_handle,out, 4); 		
@@ -402,5 +412,52 @@ int readPackage(struct usb_dev_handle *usb_handle, char* out, int len){
 }
 
 void parseHeader(char* input, int len){
+	char * temp;
+	int i;	
+	unsigned char t;
+	
+	if (len == 0)
+		return;
+		
+	switch (input[0]){
+		case 0x6:{
+			temp = (char *) malloc(sizeof(char) * 16);		
+			memcpy(temp, input + 16, 16);
+			fprintf(stdout, "Proccesor: %s\n", (char*)temp);			
+			
+			memcpy(temp, input + (16 * 6 + 8) , 16);
+			fprintf(stdout, "Firmware Version: ");
+			for(i = 0 ; i < 16; i++){
+				t = (unsigned char) temp[i];
+				if (t != 0xff && t > 31)
+					fprintf(stdout, "%c",t );
+				else
+					i = 16;
+			}			
+			fprintf(stdout, "\n");
+			
+			memcpy(temp, input + ( 9 * 16 + 12), 8);
+			fprintf(stdout, "User Name: ");
+			for(i = 0 ; i < 8; i++){
+				t = (unsigned char) temp[i];
+				if (t != 0xff && t > 31)
+					fprintf(stdout, "%c",t );
+				else
+					i = 16;
+			}
+			
+			fprintf(stdout, "\n");
+			
+			
+			if (temp != NULL)
+				free(temp);
+			
+			break;
+		}
+		
+		case 0x1:
+			break;
+		
+	};
 	
 }
