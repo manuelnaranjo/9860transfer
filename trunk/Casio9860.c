@@ -150,33 +150,6 @@ int init_9860(struct usb_dev_handle *usb_handle){
     return 0;
 }
 
-int getHandler9860(struct usb_device *usb_dev, 
-		struct usb_dev_handle *usb_handle){
-	usb_dev = device_init();
-	int retval = 0;
-	
-    if (usb_dev == NULL) {
-        fprintf(stderr, "Device not found\n");        
-        return -1;
-    }
-    
-    usb_handle = usb_open(usb_dev);
-    if (usb_handle == NULL) {
-        fprintf(stderr,
-             "Not able to claim the USB device\n");
-        return -2;
-    }
-    
-    retval = usb_claim_interface(usb_handle, 0);
-    if (retval < 0) {
-    	fprintf(stderr,
-    		"Not able to claim USB Interface\n");
-    	return -3;    	
-    }
-    
-    return 0;	
-}
-
 int main(int argc, char **argv){
 	int retval = 1;
     char* out;
