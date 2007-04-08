@@ -43,6 +43,8 @@ CASIO fx-9860 Communication Protocol Specification
 
 \begin_layout Author
 Andreas Bertheussen
+\newline
+Manuel Naranjo
 \end_layout
 
 \begin_layout Standard
@@ -143,11 +145,7 @@ The calculator uses two interfaces for communication;
 \end_layout
 
 \begin_layout Enumerate
-USB (USB 1.1)
-\end_layout
-
-\begin_layout Standard
-Because the USB 1.1 standard is well defined, it will not be covered here.
+USB (1.1 standard)
 \end_layout
 
 \begin_layout Subsection
@@ -177,12 +175,180 @@ V, a converter is necessary to use the calculator with EIA-232-E compliant
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Signal format
 \end_layout
 
 \begin_layout Standard
 <omitted>
+\end_layout
+
+\begin_layout Subsection
+USB Interface
+\end_layout
+
+\begin_layout Standard
+Even though the USB protocol is an standard, there are some things that
+ need to be done to tell the calculator it is working in USB mode.
+ All this things are addressed by the Windows Driver, but as we are not
+ targetting Windows, we needed a way to acomplish this.
+ Manuel was the one that by logging the USB data transfer discovered the
+ way.
+ This is for sure the less accurate section.
+ It just works, we have used libUSB, you might need to replace the functions
+ call for they're equivalent in the system you are targeting.
+\end_layout
+
+\begin_layout Standard
+Product ID: 0x6101 (Only applies for the 9860, SD or non SD)
+\end_layout
+
+\begin_layout Standard
+Provider ID: 0x07CF (Should apply for all Casio Products)
+\end_layout
+
+\begin_layout Subsubsection
+Code
+\end_layout
+
+\begin_layout LyX-Code
+int init_9860(struct usb_dev_handle *usb_handle){
+\end_layout
+
+\begin_layout LyX-Code
+     char* out;
+\end_layout
+
+\begin_layout LyX-Code
+     int retval;
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+     out = calloc(0x12, sizeof(char));
+\end_layout
+
+\begin_layout LyX-Code
+     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x100, 0, out, 0x12,
+ 200);
+\end_layout
+
+\begin_layout LyX-Code
+     
+\end_layout
+
+\begin_layout LyX-Code
+     if (retval < 0){
+\end_layout
+
+\begin_layout LyX-Code
+         fprintf(stderr, "Not able to send first message
+\backslash
+n");
+\end_layout
+
+\begin_layout LyX-Code
+         return retval;
+\end_layout
+
+\begin_layout LyX-Code
+     }
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+     out = (char *)realloc(out, (size_t) (0x29 * sizeof(char)));
+\end_layout
+
+\begin_layout LyX-Code
+     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x200, 0, out, 0x29,
+ 250);
+\end_layout
+
+\begin_layout LyX-Code
+     
+\end_layout
+
+\begin_layout LyX-Code
+     if (retval < 0){
+\end_layout
+
+\begin_layout LyX-Code
+         fprintf(stderr, "Not able to send second message
+\backslash
+n");
+\end_layout
+
+\begin_layout LyX-Code
+         return retval;
+\end_layout
+
+\begin_layout LyX-Code
+     }
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+     out = (char *)realloc(out, (size_t) (0x1 * sizeof(char)));
+\end_layout
+
+\begin_layout LyX-Code
+     retval = usb_control_msg(usb_handle, 0x41, 0x1, 0x0, 0, out, 0x0, 250);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+     if (retval < 0){
+\end_layout
+
+\begin_layout LyX-Code
+         fprintf(stderr, "Not able to send third message
+\backslash
+n");
+\end_layout
+
+\begin_layout LyX-Code
+         return retval;
+\end_layout
+
+\begin_layout LyX-Code
+     }
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+     return 0;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Subsubsection
+Explanation
+\end_layout
+
+\begin_layout Standard
+It's quite simple, there are three control messages that need to be sent
+ to the calculator to put it into the data transfer mode.
+ The structure usb_handle is an structure that points to the device, it
+ has been completed by usb_open.
+ You should check the libUSB code for more information.
 \end_layout
 
 \begin_layout Section
@@ -6408,10 +6574,6 @@ Flash memory commands
 
 \begin_layout Section
 The data packet
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \end_body
