@@ -188,23 +188,36 @@ USB Interface
 \end_layout
 
 \begin_layout Standard
-Even though the USB protocol is an standard, there are some things that
- need to be done to tell the calculator it is working in USB mode.
- All this things are addressed by the Windows Driver, but as we are not
- targetting Windows, we needed a way to acomplish this.
- Manuel was the one that by logging the USB data transfer discovered the
- way.
- This is for sure the less accurate section.
- It just works, we have used libUSB, you might need to replace the functions
- call for they're equivalent in the system you are targeting.
+The calculator can be identified on the USB bus by the following properties;
+\end_layout
+
+\begin_layout Itemize
+Product ID: 0x6101 (Applies only to the fx-9860G)
+\end_layout
+
+\begin_layout Itemize
+Provider ID: 0x07CF (Should apply to all Casio Products)
 \end_layout
 
 \begin_layout Standard
-Product ID: 0x6101 (Only applies for the 9860, SD or non SD)
-\end_layout
+Even though the USB standard is well-defined, some things need to be done
+ to set up the USB connetion with the calculator.
+ By examining transfer logs after using FA-124, Manuel wrote the following
+ code, utilizing libusb
+\begin_inset Foot
+status open
 
 \begin_layout Standard
-Provider ID: 0x07CF (Should apply for all Casio Products)
+\begin_inset LatexCommand \htmlurl[http://libusb.sourceforge.net/doc/]{}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Subsubsection
@@ -212,15 +225,19 @@ Code
 \end_layout
 
 \begin_layout LyX-Code
-int init_9860(struct usb_dev_handle *usb_handle){
+int init_9860(struct usb_dev_handle *usb_handle) {
 \end_layout
 
 \begin_layout LyX-Code
-     char* out;
+        int retval;
 \end_layout
 
 \begin_layout LyX-Code
-     int retval;
+        char* buffer;
+\end_layout
+
+\begin_layout LyX-Code
+        buffer = calloc(0x29, sizeof(char));
 \end_layout
 
 \begin_layout LyX-Code
@@ -228,34 +245,26 @@ int init_9860(struct usb_dev_handle *usb_handle){
 \end_layout
 
 \begin_layout LyX-Code
-     out = calloc(0x12, sizeof(char));
+        retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x100, 0, buffer,
+ 0x12, 200);
 \end_layout
 
 \begin_layout LyX-Code
-     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x100, 0, out, 0x12,
- 200);
+        if (retval < 0) {
 \end_layout
 
 \begin_layout LyX-Code
-     
-\end_layout
-
-\begin_layout LyX-Code
-     if (retval < 0){
-\end_layout
-
-\begin_layout LyX-Code
-         fprintf(stderr, "Not able to send first message
+                fprintf(stderr, "Unable to send first message
 \backslash
 n");
 \end_layout
 
 \begin_layout LyX-Code
-         return retval;
+                return retval;
 \end_layout
 
 \begin_layout LyX-Code
-     }
+        }
 \end_layout
 
 \begin_layout LyX-Code
@@ -263,46 +272,26 @@ n");
 \end_layout
 
 \begin_layout LyX-Code
-     out = (char *)realloc(out, (size_t) (0x29 * sizeof(char)));
+        retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x200, 0, buffer,
+ 0x29, 250);
 \end_layout
 
 \begin_layout LyX-Code
-     retval = usb_control_msg(usb_handle, 0x80, 0x6, 0x200, 0, out, 0x29,
- 250);
+        if (retval < 0) {
 \end_layout
 
 \begin_layout LyX-Code
-     
-\end_layout
-
-\begin_layout LyX-Code
-     if (retval < 0){
-\end_layout
-
-\begin_layout LyX-Code
-         fprintf(stderr, "Not able to send second message
+                fprintf(stderr, "Unable to send second message
 \backslash
 n");
 \end_layout
 
 \begin_layout LyX-Code
-         return retval;
+                return retval;
 \end_layout
 
 \begin_layout LyX-Code
-     }
-\end_layout
-
-\begin_layout LyX-Code
-  
-\end_layout
-
-\begin_layout LyX-Code
-     out = (char *)realloc(out, (size_t) (0x1 * sizeof(char)));
-\end_layout
-
-\begin_layout LyX-Code
-     retval = usb_control_msg(usb_handle, 0x41, 0x1, 0x0, 0, out, 0x0, 250);
+        }
 \end_layout
 
 \begin_layout LyX-Code
@@ -310,21 +299,26 @@ n");
 \end_layout
 
 \begin_layout LyX-Code
-     if (retval < 0){
+        retval = usb_control_msg(usb_handle, 0x41, 0x1, 0x0, 0, buffer,
+ 0x0, 250);
 \end_layout
 
 \begin_layout LyX-Code
-         fprintf(stderr, "Not able to send third message
+        if (retval < 0) {
+\end_layout
+
+\begin_layout LyX-Code
+                fprintf(stderr, "Unable to send third message
 \backslash
 n");
 \end_layout
 
 \begin_layout LyX-Code
-         return retval;
+                return retval;
 \end_layout
 
 \begin_layout LyX-Code
-     }
+        }
 \end_layout
 
 \begin_layout LyX-Code
@@ -332,11 +326,19 @@ n");
 \end_layout
 
 \begin_layout LyX-Code
-     return 0;
+        free(buffer);
+\end_layout
+
+\begin_layout LyX-Code
+        return 0;
 \end_layout
 
 \begin_layout LyX-Code
 }
+\end_layout
+
+\begin_layout LyX-Code
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -344,10 +346,10 @@ Explanation
 \end_layout
 
 \begin_layout Standard
-It's quite simple, there are three control messages that need to be sent
- to the calculator to put it into the data transfer mode.
- The structure usb_handle is an structure that points to the device, it
- has been completed by usb_open.
+There are three control messages that need to be sent to the calculator
+ to put it into the data transfer mode.
+ The structure usb_handle is a structure that points to the device, it has
+ been completed by usb_open.
  You should check the libUSB code for more information.
 \end_layout
 
@@ -6574,6 +6576,130 @@ Flash memory commands
 
 \begin_layout Section
 The data packet
+\end_layout
+
+\begin_layout Standard
+Data packets are always sent in relation to commands, never alone.
+ The largest data size per packet is limited to 256 bytes.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+The original docs mentions 512b also..
+\end_layout
+
+\end_inset
+
+The ST of data packets is the same as for the command packet it follows.
+\end_layout
+
+\begin_layout Subsection
+Packet format (D)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+4 b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+4 b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\emph on
+n 
+\emph default
+b (max 256 b)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Total number
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Packet number
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Transmitted data
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Both the total number of data packets and packet number contain hexadecimal
+ values in ASCII format.
 \end_layout
 
 \end_body
