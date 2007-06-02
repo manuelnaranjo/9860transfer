@@ -2,7 +2,7 @@
 
 = fx-9860G SD =
 
-[http://www.mendietabar.com.ar/manuel/casio/pict Pictures of the board]
+[http://picasaweb.google.com/naranjo.manuel/CASIO9860 Pictures of the board]
 
 == CPU ==
 Renesas SuperH 32bit RISC processor.
