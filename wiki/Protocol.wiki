@@ -1,3 +1,8 @@
+*Note: Protocol documentation is being written and kept at [http://xfer9860.sourceforge.net/doc/].
+
+For software using the protocol of the Casio fx-9860G and fx-9860 G SD, check out xfer9860. You can find xfer9860 at sourceforge at [http://xfer9860.sourceforge.net/], version 0.1 of xfer9860 is able to send files to the calculators flash memory.
+
+= (Old stuff) ==
 In this page we will make the protocol analysis:
 
 All values are in HEX.
@@ -191,6 +196,10 @@ LpWhile C!=0
 Locate 2,7,"END"
 
 }}}
+
+
+
+
 
 
 
